@@ -74,25 +74,37 @@
   </div>
 </template>
 <script>
-  import axios from 'axios'
+  //import axios from 'axios'
   import time from '../time'
   export default{
      data(){
       return{
-        getMenuItems:[],
+        //getMenuItems:[],
         carList:[]
       }
     },
     created(){
-         //console.log("111")
-      axios.get('/menu.json').then(
-          res=>{
-              console.log(res.data)
-              this.getMenuItems = res.data
-          }
-      )
+      //axios.get('/menu.json').then(
+//      this.http.get('/menu.json').then(
+//          res=>{
+//              console.log(res.data)
+//              this.getMenuItems = res.data
+//          }
+//      )
+      //获取数据存储到vuex
+        this.http.get('/menu.json').then(
+          res=> {
+              this.$store.commit('setMenuItems',res.data)
+          })
     },
     computed:{
+        //获取vuex state 里面的menuitems
+      getMenuItems(){
+        //console.log("computed")
+        //return this.$store.state.menuItems
+        // 通过getters获取数据
+        return this.$store.getters.getMenuItems
+      },
       total(){
           let totalcost=0
           for(let i =0;i<this.carList.length;i++){
@@ -102,6 +114,9 @@
       }
     },
     methods:{
+        fetchData(){
+
+        },
         addToCar(item,option){
             let car ={
               id:item.id,

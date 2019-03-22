@@ -29,6 +29,10 @@
         password:''
       }
     },
+    //组件内的守卫
+    beforeRouteEnter:(to,from,next)=>{
+        next(vm => vm.$store.dispatch("setUser",null))
+    },
     methods:{
       onSubmit(){
         axios.get('/user.json').then(
@@ -48,8 +52,10 @@
               })
               console.log(result)
               if(result!=null && result.length>0){
+                  this.$store.dispatch("setUser",result[0].email)
                   this.$router.push({name:'homeLink'})
               }else {
+                  this.$store.dispatch("setUser",null)
                   alert("账号密码有误!")
               }
             }
